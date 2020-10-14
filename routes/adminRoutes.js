@@ -8,4 +8,17 @@ module.exports = (app, adminCollection) => {
       })
       .catch((err) => console.log(err));
   });
+
+  //Checks whether the loggedin user is admin
+  app.post("/isAdminCheck", (req, res) => {
+    adminCollection
+      .findOne({ email: req.body.email })
+      .then((result) => {
+        if (result) {
+          return res.send(true);
+        }
+        return res.send(false);
+      })
+      .catch((err) => console.log(err));
+  });
 };
