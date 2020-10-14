@@ -29,12 +29,13 @@ client.connect((err) => {
     return;
   }
   console.log("Database connected");
+  const db = client.db(`${process.env.DB_NAME}`);
 
-  const servicesCollection = client
-    .db(`${process.env.DB_NAME}`)
-    .collection("services");
+  const servicesCollection = db.collection("services");
+  const adminCollection = db.collection("admin");
 
   require("./routes/serviceRoutes")(app, servicesCollection);
+  require("./routes/adminRoutes")(app, adminCollection);
 });
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

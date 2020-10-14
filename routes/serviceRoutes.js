@@ -18,6 +18,16 @@ module.exports = (app, servicesCollection) => {
       .insertOne({ title, description, iconImage })
       .then((result) => {
         return res.send(result.insertedCount > 0);
-      });
+      })
+      .catch((err) => console.log(err));
+  });
+
+  // Gets all services
+  app.get("/services", (req, res) => {
+    servicesCollection.find({}).toArray((err, documents) => {
+      if (!err) {
+        return res.send(documents);
+      }
+    });
   });
 };
