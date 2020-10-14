@@ -2,6 +2,7 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const fileUpload = require("express-fileupload");
 require("dotenv").config();
 
 const app = express();
@@ -19,6 +20,7 @@ const client = new MongoClient(uri, {
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(fileUpload());
 
 // MongoDB and server starts
 client.connect((err) => {
@@ -31,6 +33,8 @@ client.connect((err) => {
   const servicesCollection = client
     .db(`${process.env.DB_NAME}`)
     .collection("services");
+
+  require("./routes/serviceRoutes")(app, servicesCollection);
 });
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
