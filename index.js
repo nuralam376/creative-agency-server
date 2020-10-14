@@ -33,9 +33,11 @@ client.connect((err) => {
 
   const servicesCollection = db.collection("services");
   const adminCollection = db.collection("admin");
+  const reviewCollection = db.collection("review");
 
   require("./routes/serviceRoutes")(app, servicesCollection);
   require("./routes/adminRoutes")(app, adminCollection);
+  require("./routes/reviewRoutes")(app, reviewCollection);
 });
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
