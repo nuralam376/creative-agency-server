@@ -26,11 +26,15 @@ module.exports = (app, servicesCollection) => {
 
   // Gets all services
   app.get("/services", (req, res) => {
-    servicesCollection.find({}).toArray((err, documents) => {
-      if (!err) {
-        return res.send(documents);
-      }
-    });
+    servicesCollection
+      .find({})
+      .limit(6)
+      .sort({ _id: -1 })
+      .toArray((err, documents) => {
+        if (!err) {
+          return res.send(documents);
+        }
+      });
   });
 
   // Gets the individual service information

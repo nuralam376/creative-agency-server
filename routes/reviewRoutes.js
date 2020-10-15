@@ -9,8 +9,12 @@ module.exports = (app, reviewCollection) => {
 
   //Fetches all reviews
   app.get("/allreviews", (req, res) => {
-    reviewCollection.find({}).toArray((err, documents) => {
-      res.send(documents);
-    });
+    reviewCollection
+      .find({})
+      .limit(6)
+      .sort({ _id: -1 })
+      .toArray((err, documents) => {
+        res.send(documents);
+      });
   });
 };

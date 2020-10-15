@@ -50,7 +50,7 @@ module.exports = (app, orderCollection) => {
     const { id, status } = req.body;
 
     orderCollection
-      .updateOne(
+      .findOneAndUpdate(
         { _id: ObjectId(id) },
         {
           $set: {
@@ -58,11 +58,13 @@ module.exports = (app, orderCollection) => {
           },
         }
       )
-      .then((err, documents) => {
-        if (!err) {
-          return res.send(documents);
-        }
-        res.send(false);
+      .then(() => {
+        orderCollection.find({}).toArray((err, documents) => {
+          if (!err) {
+            return res.send(documents);
+          }
+          return res.send(false);
+        });
       });
   });
 };
