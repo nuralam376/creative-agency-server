@@ -1,3 +1,5 @@
+const ObjectId = require("mongodb").ObjectID;
+
 module.exports = (app, orderCollection) => {
   //Adds new order
   app.post("/addorder", (req, res) => {
@@ -24,13 +26,43 @@ module.exports = (app, orderCollection) => {
 
   // Gets all orders of the current user
   app.post("/allorders", (req, res) => {
-    orderCollection
-      .find({ email: req.body.email })
-      .toArray((err, documents) => {
+    const { email } = req.body.email;
+
+    if (email) {
+      orderCollection.find({ email }).toArray((err, documents) => {
         if (!err) {
           return res.send(documents);
         }
         res.send(null);
+      });
+    } else {
+      orderCollection.find({}).toArray((err, documents) => {
+        if (!err) {
+          return res.send(documents);
+        }
+        res.send(null);
+      });
+    }
+  });
+
+  // Changed order status
+  app.patch("/changeorderstatus", (req, res) => {
+    const { id, status } = req.body;
+
+    orderCollection
+      .updateOne(
+        { _id: ObjectId(id) },
+        {
+          $set: {
+            status,
+          },
+        }
+      )
+      .then((err, documents) => {
+        if (!err) {
+          return res.send(documents);
+        }
+        res.send(false);
       });
   });
 };
