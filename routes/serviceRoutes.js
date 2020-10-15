@@ -1,3 +1,5 @@
+const ObjectId = require("mongodb").ObjectID;
+
 module.exports = (app, servicesCollection) => {
   //Adds new service
   app.post("/addservice", (req, res) => {
@@ -29,5 +31,20 @@ module.exports = (app, servicesCollection) => {
         return res.send(documents);
       }
     });
+  });
+
+  // Gets the individual service information
+  app.get("/service/:id", (req, res) => {
+    const id = req.params.id;
+
+    servicesCollection
+      .findOne({ _id: ObjectId(id) })
+      .then((service) => {
+        if (service) {
+          return res.send(service);
+        }
+        return res.send(null);
+      })
+      .catch((err) => console.log(err));
   });
 };
