@@ -26,7 +26,7 @@ module.exports = (app, orderCollection) => {
 
   // Gets all orders of the current user
   app.post("/allorders", (req, res) => {
-    const { email } = req.body.email;
+    const { email } = req.body;
 
     if (email) {
       orderCollection.find({ email }).toArray((err, documents) => {
