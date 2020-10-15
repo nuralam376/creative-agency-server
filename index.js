@@ -6,7 +6,7 @@ const fileUpload = require("express-fileupload");
 require("dotenv").config();
 
 const app = express();
-const PORT = process.env.port || 5000;
+const PORT = process.env.PORT || 5000;
 
 // Mongodb Connection setup
 const MongoClient = require("mongodb").MongoClient;
